@@ -1,0 +1,62 @@
+{
+    "id1": {
+        "Name": "RAJAT AGARWAAL",
+        "email": [
+            "rajatagarwaal30@gmail.com"
+        ],
+        "contact": "9958168687",
+        "skills": {
+            "STATISTICAL ANALYSIS": 3,
+            "SQL": 18,
+            "DEEP LEARNING": 3,
+            "TABLEAU": 6,
+            "MACHINE LEARNING": 15,
+            "GITLAB": 6,
+            "PYTHON": 24,
+            "DATA SCIENCE": 3,
+            "PIG": 6,
+            "NATURAL LANGUAGE PROCESSING": 1,
+            "COMPUTER VISION": 9
+        }
+    },
+    "id2": {
+        "Name": "RAJAT AGARWAAL",
+        "email": [
+            "rajatagarwaal30@gmail.com"
+        ],
+        "contact": "9958168687",
+        "skills": {
+            "TABLEAU": 6,
+            "SQL": 18,
+            "PYTHON": 24,
+            "GITLAB": 6,
+            "CNN": 6,
+            "COMPUTER VISION": 9,
+            "RANDOM FORESTS": 3
+        },
+        "domain": [
+            "DEVOPS",
+            "MACHINE_LEARNING"
+        ]
+    },
+    "id3": {
+        "Name": "RAJAT AGARWAAL",
+        "email": [
+            "rajatagarwaal30@gmail.com"
+        ],
+        "contact": "9958168687",
+        "skills": {
+            "CNN": 6,
+            "TABLEAU": 6,
+            "SQL": 18,
+            "RANDOM FORESTS": 3,
+            "PYTHON": 24,
+            "GITLAB": 6,
+            "COMPUTER VISION": 9
+        },
+        "domain": [
+            "MACHINE_LEARNING",
+            "DEVOPS"
+        ]
+    }
+}
