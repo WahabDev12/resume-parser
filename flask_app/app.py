@@ -199,6 +199,7 @@ def upload():
 
         new_vals = Counter(domain_list).most_common()
         new_vals = new_vals[::-1] #this sorts the list in ascending order
+        print("this is: ", new_vals)
 
         domain_dict = {}
         for a, b in new_vals:
@@ -206,7 +207,10 @@ def upload():
 
 
         general_dict["skills"] = skills_dict
-        general_dict["domain"] = [new_vals[-1][0],new_vals[-2][0]]
+        if len(new_vals) > 1:
+            general_dict["domain"] = [new_vals[-1][0],new_vals[-2][0]]
+        else: 
+            new_vals = []
 
         skill_df = json_normalize(general_dict['skills'])
         num = skill_df.sum(axis = 1)[0]
@@ -215,9 +219,9 @@ def upload():
         for skill_x in skill_df.columns:
             list_details.append({
                     'doc':file_path ,'Name' : name_candidate.upper(),
-                    'email' : emails[0] ,
-                    'contact' : phone_contact[0],
-                    'domain':[new_vals[-1][0][5:],new_vals[-2][0][5:]],
+                    'email' : emails[0] if emails else None,
+                    'contact' : phone_contact[0] if phone_contact else None ,
+                    'domain':[new_vals[-1][0][5:],new_vals[-2][0][5:]] if len(new_vals) > 1  else ["No domains"],
                     'skills':skill_x ,
                     'normalised_count':round((skill_df[skill_x][0]*100)/num,2),
                     'total_skills':list(skill_df.columns)
@@ -273,8 +277,6 @@ def upload():
         
 
     return render_template('frontend.html', form = form)
-
-
 
 
 if __name__ == '__main__':

@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume Analyzer</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <link href="index.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script
-src="https://www.gstatic.com/charts/loader.js">
+
 </script>
 </head>
 <body>
@@ -22,14 +19,14 @@ src="https://www.gstatic.com/charts/loader.js">
             <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
             <ul class="nav-list">
               <li>
-                <a class="links"  class="links" href="home.html">Home</a>
+                <a class="links"  class="links" href="frontend.html">Home</a>
               </li>
               <li>
-                <a class="links" href="page-one.html">About</a>
+                <a class="links" href="frontend.html">About</a>
               </li>
 
               <li>
-                <a class="links" href="page-one.html">Team</a>
+                <a class="links" href="frontend.html">Team</a>
               </li>
     
             </ul>
@@ -44,20 +41,42 @@ src="https://www.gstatic.com/charts/loader.js">
 
       <section class="bar-chart">
         <form class="file-form" method='POST' enctype='multipart/form-data'>
-            {{form.hidden_tag()}}
-            {{form.file(class_="form-file")}}
+            {{ form.hidden_tag() }}
+            {{ form.file(class_="form-file") }}
             
-            {{form.submit(class_="form-control")}}
+            {{ form.submit(class_="form-control") }}
         </form>
     
       </section>
       {% if user_data %}
-      <h2 style="text-align: center;margin-top: 4rem; color:#333">Candidate's Details</h2>
-      <div id="kapak">
-        <h4 style="color:#333"> 👨‍🦱Name: {{user_data["Name"] }}</h4>
-        <h4 style="color:#333"> 📬 Email: {{user_data["Email"][0] }}</h4>
-        <h4 style="color:#333"> ☎️ Phone: {{user_data["Contact"][0] }}</h4>
-        <h4 style="color:#333"> 💖 Percentage Match: {{ match_percentage }}%</h4>
+        <h2 style="text-align: center;margin-top: 4rem; color:#333">Candidate's Details</h2>
+        <div id="kapak">
+          <h4 style="color:#333"> 
+            {% if user_data["Name"]  %}
+                👨‍🦱Name: {{ user_data["Name"] }}
+            {% endif %}
+          </h4>
+          <h4 style="color:#333">
+              {% for email in user_data["Email"] %}
+                  📬 Email: 
+                  {% if email %}
+                    {{ email }}
+                    {% else %}
+                    None
+                  {% endif %}
+              {% endfor %}
+          </h4>
+          <h4 style="color:#333">
+          {% for phone in user_data["Contact"] %}
+            ☎️ Phone:
+            {% if phone %}
+              {{ phone }}
+              {% else %}
+                None
+            {% endif %}
+          {% endfor %}
+          </h4>
+          <h4 style="color:#333"> 💖 Percentage Match: {{ match_percentage }}%</h4>
 
     </div>
 
@@ -66,15 +85,21 @@ src="https://www.gstatic.com/charts/loader.js">
         <h4 style="text-align: center;">Candidate's Skills🛠️:  </h4>   
 
           <div style="display: flex;gap: 20px;">
+            {% if user_data["skills"] %}
               {% for skill in user_data["skills"].keys()  %}
-                   <h4>{{ skill }}</h4>    
+                {% if skill %}
+                  <h4>{{ skill }}</h4>
+                  {% else %}
+                  No skills found...
+                {% endif %}       
 
               {% endfor %}
+            {% endif %}
 
         </div>
     </div>
 
-      <h2 style="text-align: center;margin-top:2rem; color: #333;">Visualizing the data</h2>
+      <h2 style="text-align: center;margin-top:2rem; color: #333;">Visualizing the data </h2>
 
       <section class="user-section"> 
         <div id="profil">
