@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css?family=Epilogue');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+body{
+    margin: 0;
+     padding: 0;
+     font-family: 'Ubuntu', sans-serif;
+}
+ .navigation {
+    height: 75px;
+    background-color: #5433FF;
+    box-shadow: 10px 10px 25px -18px rgba(0,0,0,0.75);
+    position: static;
+
+}
+ .brand {
+    position: absolute;
+    padding-left: 20px;
+    float: left;
+    line-height: 55px;
+    text-transform: uppercase;
+    font-size: 1.4em;
+}
+ .brand a, .brand a:visited {
+     color: #ffffff;
+     text-decoration: none;
+}
+ .nav-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding:10px;
+    
+}
+.title{
+    text-transform: capitalize;
+    font-weight:bold;
+    font-size:24px;
+}
+
+nav {
+     float: right;
+}
+ nav ul {
+     list-style: none;
+     margin: 0;
+     padding: 0;
+}
+ nav ul li {
+     float: left;
+     position: relative;
+}
+ nav ul li a,nav ul li a:visited {
+     display: block;
+     padding: 0 20px;
+     line-height: 55px;
+     color: #fff;
+     background: #262626 ;
+     text-decoration: none;
+}
+ nav ul li a{
+     background: transparent;
+     color: #FFF;
+}
+ nav ul li a:hover, nav ul li a:visited:hover {
+     background: #2581DC;
+     color: #ffffff;
+}
+ .navbar-dropdown li a{
+     background: #2581DC;
+}
+ nav ul li a:not(:only-child):after, nav ul li a:visited:not(:only-child):after {
+     padding-left: 4px;
+     content: ' \025BE';
+}
+ nav ul li ul li {
+     min-width: 190px;
+}
+ nav ul li ul li a {
+     padding: 15px;
+     line-height: 20px;
+}
+ .navbar-dropdown {
+     position: absolute;
+     display: none;
+     z-index: 1;
+     background: #fff;
+     box-shadow: 0 0 35px 0 rgba(0,0,0,0.25);
+}
+/* Mobile navigation */
+ .nav-mobile {
+     display: none;
+     position: absolute;
+     top: 0;
+     right: 0;
+     background: transparent;
+     height: 55px;
+     width: 70px;
+}
+ @media only screen and (max-width: 800px) {
+     .nav-mobile {
+         display: block;
+    }
+     nav {
+         width: 100%;
+         padding: 55px 0 15px;
+    }
+     nav ul {
+         display: none;
+    }
+     nav ul li {
+         float: none;
+    }
+     nav ul li a {
+         padding: 15px;
+         line-height: 20px;
+         background: #262626;
+    }
+     nav ul li ul li a {
+         padding-left: 30px;
+    }
+     .navbar-dropdown {
+         position: static;
+}
+ @media screen and (min-width:800px) {
+     .nav-list {
+         display: block !important;
+    }
+}
+ #navbar-toggle {
+     position: absolute;
+     left: 18px;
+     top: 15px;
+     cursor: pointer;
+     padding: 10px 35px 16px 0px;
+}
+ #navbar-toggle span, #navbar-toggle span:before, #navbar-toggle span:after {
+     cursor: pointer;
+     border-radius: 1px;
+     height: 3px;
+     width: 30px;
+     background: #ffffff;
+     position: absolute;
+     display: block;
+     content: '';
+     transition: all 300ms ease-in-out;
+}
+ #navbar-toggle span:before {
+     top: -10px;
+}
+ #navbar-toggle span:after {
+     bottom: -10px;
+}
+ #navbar-toggle.active span {
+     background-color: transparent;
+}
+ #navbar-toggle.active span:before, #navbar-toggle.active span:after {
+     top: 0;
+}
+ #navbar-toggle.active span:before {
+     transform: rotate(45deg);
+}
+ #navbar-toggle.active span:after {
+     transform: rotate(-45deg);
+}
+}
+
+/*BAR CHART*/
+.bar-chart{
+    margin-top:1rem;
+    display: flex;
+    justify-content: center;
+    margin-bottom:1.5em;
+}
+
+
+.form-control{  
+    outline:none;
+    border:none;
+    padding:13px;
+    width:150px;
+    cursor: pointer;
+    font-family: "Ubuntu",sans-serif;
+    border-radius:5px;
+    font-size: 15px;
+    color:white;
+    font-weight:600;
+    background-color: #2581DC;
+}
+
+.uoka{
+    font-family: "Ubuntu";
+}
+
+.file-form{
+    gap:20px;
+    flex-direction: column;
+}
+
+
+.user-section{
+    display: flex;
+    justify-content: center;
+    gap:4rem;
+    padding-left:40px;
+    padding-right:40px;
+    margin-bottom:4rem;
+
+}
+
+
+  #profil {
+    width: 50%;
+    height:300px;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    box-shadow: 0 0 35px 0 rgba(0,0,0,0.25);
+
+    
+  }
+  
+  #kapak {
+        display: flex;
+        justify-content: center;
+        gap:20px;
+  }
+
+  .data_img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  #kapak > h4{
+    color:#262626;
+  }
+ 
+ #kapak img {
+   width:100%;
+ }
+  
+  #detay {
+    padding: 40px 10px 10px 10px;
+    text-align: justify;
+    line-height: 1.7em;
+    text-align: center;
+  }
+  
+  #detay h3 {
+    text-align: center;
+    font-style: italic;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin: 10px;
+  }
+  
+  #pr {
+    position: absolute;
+    bottom: -35px;
+    left: 37%;
+  }
+  
+  #pr img {
+    border-radius: 100%;
+    margin-top:1rem;
+
+  }

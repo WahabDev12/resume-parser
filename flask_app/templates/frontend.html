@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link href="index.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script
+src="https://www.gstatic.com/charts/loader.js">
+</script>
+</head>
+<body>
+    <section class="navigation">
+        <div class="nav-container">
+          <div class="brand">
+            <a class="title" href="frontend.html">Resume Analyzer</a>
+          </div>
+          <nav>
+            <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
+            <ul class="nav-list">
+              <li>
+                <a class="links"  class="links" href="home.html">Home</a>
+              </li>
+              <li>
+                <a class="links" href="page-one.html">About</a>
+              </li>
+
+              <li>
+                <a class="links" href="page-one.html">Team</a>
+              </li>
+    
+            </ul>
+          </nav>
+        </div>
+      </section>
+    
+      
+      <div style="display: flex; justify-content: center; margin-top:30px;">
+        <h2 class="uoka">Upload 📁 your resume for analysis...</h2>
+      </div>
+
+      <section class="bar-chart">
+        <form class="file-form" method='POST' enctype='multipart/form-data'>
+            {{form.hidden_tag()}}
+            {{form.file(class_="form-file")}}
+            
+            {{form.submit(class_="form-control")}}
+        </form>
+    
+      </section>
+      {% if user_data %}
+      <h2 style="text-align: center;margin-top: 4rem; color:#333">Candidate's Details</h2>
+      <div id="kapak">
+        <h4 style="color:#333"> 👨‍🦱Name: {{user_data["Name"] }}</h4>
+        <h4 style="color:#333"> 📬 Email: {{user_data["Email"][0] }}</h4>
+        <h4 style="color:#333"> ☎️ Phone: {{user_data["Contact"][0] }}</h4>
+        <h4 style="color:#333"> 💖 Percentage Match: {{ match_percentage }}%</h4>
+
+    </div>
+
+
+    <div id="kapak">
+        <h4 style="text-align: center;">Candidate's Skills🛠️:  </h4>   
+
+          <div style="display: flex;gap: 20px;">
+              {% for skill in user_data["skills"].keys()  %}
+                   <h4>{{ skill }}</h4>    
+
+              {% endfor %}
+
+        </div>
+    </div>
+
+      <h2 style="text-align: center;margin-top:2rem; color: #333;">Visualizing the data</h2>
+
+      <section class="user-section"> 
+        <div id="profil">
+
+          <div style="width:100%; height:100%; margin:auto">
+            <img class="data_img" src="data:image/png;base64, {{ plot_url}}">
+          </div>  
+
+        </div>
+
+        <div id="profil">
+
+          <div style="width:100%; height:100%; margin:auto">
+            <img class="data_img" src="data:image/png;base64, {{ plot_url_two }}">
+          </div>  
+          
+        </div>
+
+      </section>
+
+      {% endif  %}
+
+</body>
+
+</html>

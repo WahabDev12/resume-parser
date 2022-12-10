@@ -1,5 +1,5 @@
 # Import all packages
-from flask import Flask, render_template, redirect, url_for, send_from_directory
+from flask import Flask, render_template
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
@@ -15,8 +15,11 @@ from collections import Counter
 import docx2txt
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import base64
 from io import BytesIO
+import random
+import string
+import urllib
+import base64
 
 import nltk
 nltk.download('punkt')
@@ -28,10 +31,8 @@ import seaborn as sns
 from pdfminer.high_level import extract_text
 import nltk
 import re
-import subprocess
 nltk.download('stopwords')
-import json
-import binascii
+
 
 
 app = Flask(__name__)
@@ -46,7 +47,7 @@ def api_test():
 
 class UploadFileForm(FlaskForm):
     file = FileField("File", validators = [InputRequired()])
-    submit = SubmitField("Upload File")
+    submit = SubmitField("Submit")
 
 
 PHONE_REG_GH = re.compile(r'[\+\(]?[1-9][0-9 .\-\(\)]{8,}[0-9]')
@@ -77,6 +78,12 @@ def extract_names(txt):
 
     return person_names 
 
+
+# generate random file names
+letters = [random.choice(string.ascii_lowercase) for i in range(4)]
+random_filename = ''.join(letters)
+    
+
 def extract_phone_number(resume_text):
     phone = re.findall(PHONE_REG_GH, resume_text)
 
@@ -93,16 +100,15 @@ file_skills_domain.columns = file_skills_domain.columns.str.strip().str.upper()
 list_domains = []
 for col in file_skills_domain.columns:
   
-  file_skills_domain[col] = file_skills_domain[col].str.strip().str.upper()
+    file_skills_domain[col] = file_skills_domain[col].str.strip().str.upper()
 
-  if col != 'EDUCATION' :
-    list_domains.append('%s' % col)
-    globals()['%s' % col]= [x for x in file_skills_domain[col].to_list() if type(x) != float]
+    if col != 'EDUCATION' :
+        list_domains.append('%s' % col)
+        globals()['%s' % col]= [x for x in file_skills_domain[col].to_list() if type(x) != float]
 
 list_skills = []
 for i in list_domains:
   list_skills=list_skills + eval(i)
-# print(list_skills)
 
 
 skills_dict = {}
@@ -161,7 +167,7 @@ def upload():
         file = form.file.data 
         file_path = ""
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),
-        app.config['UPLOAD_FOLDER'],secure_filename(file.filename))) 
+        app.config['UPLOAD_FOLDER'], secure_filename(file.filename))) 
         
         file_path += ((os.path.join(root_dir,file.filename)))
 
@@ -202,22 +208,20 @@ def upload():
         general_dict["skills"] = skills_dict
         general_dict["domain"] = [new_vals[-1][0],new_vals[-2][0]]
 
-        print(general_dict)
-
-
         skill_df = json_normalize(general_dict['skills'])
         num = skill_df.sum(axis = 1)[0]
 
         list_details = []
         for skill_x in skill_df.columns:
-            list_details.append({'doc':file_path ,'Name' : name_candidate.upper(),
+            list_details.append({
+                    'doc':file_path ,'Name' : name_candidate.upper(),
                     'email' : emails[0] ,
                     'contact' : phone_contact[0],
                     'domain':[new_vals[-1][0][5:],new_vals[-2][0][5:]],
                     'skills':skill_x ,
                     'normalised_count':round((skill_df[skill_x][0]*100)/num,2),
                     'total_skills':list(skill_df.columns)
-                    })
+                })
 
         job_description = docx2txt.process(join(dirname(realpath(__file__)), 'static/job_desc.docx'))
         resume = docx2txt.process(join(dirname(realpath(__file__)), 'static/resume1.docx'))
@@ -236,25 +240,39 @@ def upload():
         print()
         print("The match percentage of the resume is ", match_percentage,"%")
 
-        plt.figure(figsize = (15,8))
-
+        # First figure
+        img_one = BytesIO()
+        plt.figure(figsize = (8,4))
         skills_dict
         my_df = pd.DataFrame(skills_dict.items())
         ax = sns.barplot(x = 0, y = 1, data = my_df)
-        img_one = ax.set(xlabel = 'Skills', ylabel = '% Proficiency', title = 'SKILLS PROFICIENCY OF CANDIDATE ')
+        ax.set(xlabel = 'Skills', ylabel = '% Proficiency', title = 'SKILLS PROFICIENCY OF CANDIDATE ')
 
+        plt.savefig(img_one, format = 'png')
+        plt.close()
+        img_one.seek(0)
+        plot_url = urllib.parse.quote(base64.b64encode(img_one.getvalue()))
+
+        # Second figure
+        plt.figure(figsize=(8,4))
+        img_two = BytesIO()
         my_df = pd.DataFrame(domain_dict.items())
         ax = sns.barplot(x = 0, y = 1, data = my_df)
-        image_two = ax.set(xlabel = 'Domain', ylabel = '% Score', title = 'FIELD SPECIALITY OF CANDIDATE')
-          # Save it to a temporary buffer.
-        buf = BytesIO()
-        img_one.savefig(buf, format="png")
-        # Embed the result in the html output.
-        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+        ax.set(xlabel = 'Domain', ylabel = '% Score', title = 'FIELD SPECIALITY OF CANDIDATE')
 
-        return f"<img src='data:image/png;base64,{data}'/>"
+        plt.savefig(img_two, format = 'png')
+        plt.close()
+        img_two.seek(0)
+        plot_url_two = urllib.parse.quote(base64.b64encode(img_two.getvalue()))
 
-    return render_template('index.html', form = form, data = data, img_two = image_two)
+        return render_template(
+                'frontend.html', plot_url = plot_url, plot_url_two = plot_url_two, 
+                user_data = general_dict,
+                match_percentage = match_percentage , form = form
+            )
+        
+
+    return render_template('frontend.html', form = form)
 
 
 
